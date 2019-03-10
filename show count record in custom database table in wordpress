@@ -1,0 +1,34 @@
+// Add This Code For Function.php
+
+function app_like_teams_form_page_handler() {
+	global $wpdb;
+	
+	$user_violations_like = $wpdb->get_results("SELECT count(*) AS ip_count, like_id , is_like , nomination_id , user_id
+									FROM app_like
+									GROUP BY nomination_id , is_like
+									HAVING COUNT(*) > 0");
+	?>
+    	
+		
+	<table class="widefat fixed" cellspacing="0" style="margin-top: 30px;">
+		<thead>
+			<tr>
+				<th id="cb" class="manage-column column-columnname" scope="col" style="font-weight: 900;">Like Id</th> 
+				<th id="cb" class="manage-column column-columnname" scope="col" style="font-weight: 900;">User Id</th> 
+				<th id="cb" class="manage-column column-columnname" scope="col" style="font-weight: 900;">Nomination Id</th> 
+				<th id="cb" class="manage-column column-columnname" scope="col" style="font-weight: 900;">Count</th> 
+			</tr>
+		</thead>
+		<tfoot>
+			<?php foreach ($user_violations_like as $uvl){ ?>
+				<tr>
+					<th class="manage-column" scope="col"><?=$uvl->like_id ?></th>
+					<th class="manage-column" scope="col"><?=$uvl->user_id ?></th>
+					<th class="manage-column" scope="col"><?=$uvl->nomination_id ?></th>
+					<th class="manage-column" scope="col"><?=$uvl->ip_count ?> <?=$uvl->is_like ?></th>
+				</tr>
+			<?php } ?> 
+		</tfoot>
+	</table>
+	<?php
+}
